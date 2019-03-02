@@ -93,12 +93,14 @@ class ViewController: UIViewController {
     
     func playSequence()
     {
+  
         if sequenceIndex < colourSequence.count               //means this round is completed is index is lower
         {
             flash(button: colourButtons[colourSequence[sequenceIndex]])
             sequenceIndex += 1
         } else
         {
+            
             coloursToTap = colourSequence
             view.isUserInteractionEnabled = true
             actionButton.setTitle("Tap the circles", for: .normal)
@@ -125,7 +127,11 @@ class ViewController: UIViewController {
     func endGame()                                          //End of game function
     {
         //ternary option method
-        let message = currentPlayer == 0 ? "Player 2 wins!" : "Player 1 Wins!"
+        
+       
+        actionButton.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        actionButton.titleLabel?.textAlignment = NSTextAlignment.center
+        let message = currentPlayer == 0 ? "Player 2 wins! \n\n Tap screen to restart" : "Player 1 Wins! \n\n Tap screen to restart"
         actionButton.setTitle(message, for: .normal)
         gameEnded = true
     }
@@ -158,10 +164,12 @@ class ViewController: UIViewController {
             actionButton.isEnabled = true
         }
     }
+    
     @IBAction func actionButtonhandler(_ sender: UIButton)
     {
         sequenceIndex = 0                                   //set index to 0 at beginning of the game
-        actionButton.setTitle("Memorize", for: .normal)     //update title to tell user to memorize once sequence starts
+        actionButton.setTitle("Player \(currentPlayer + 1) Memorize", for: .normal)     //update title to tell user to memorize once sequence starts
+        print(currentPlayer)
         actionButton.isEnabled = false                      //not required
         view.isUserInteractionEnabled = false               //disable interaction with this view and sub-views
         addNewColor()                                       //call method to start new colour sequence
