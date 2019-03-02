@@ -88,7 +88,7 @@ class ViewController: UIViewController {
     
     func addNewColor()
     {
-        colourSequence.append(Int(arc4random_uniform(UInt32(4))))       //add colours 0-3 from tag
+        colourSequence.append(Int(arc4random_uniform(UInt32(6))))       //add colours 0-3 from tag
     }
     
     func playSequence()

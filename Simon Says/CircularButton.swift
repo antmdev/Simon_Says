@@ -13,7 +13,7 @@ class CircularButton: UIButton
 
     override func awakeFromNib()
     {
-        layer.cornerRadius = frame.size.width/2 // 2 rounded corners
+        layer.cornerRadius = frame.size.width/4 // 2 rounded corners
         layer.masksToBounds = true //no sub layers behind and shape is circular
     }
     
