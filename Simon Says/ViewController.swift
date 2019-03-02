@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     var colourSequence = [Int]() //assign to empty array
     var coloursToTap = [Int]()
     
+    var gameEnded = false       //when a player makes a mistake
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         colourButtons = colourButtons.sorted() //sorted is built in method to sort by tags
@@ -37,13 +39,22 @@ class ViewController: UIViewController {
             $0.tag < $1.tag
             }
         
+        createNewGame()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
+        if gameEnded
+        {
+            gameEnded = false
             createNewGame()
-        
+        }
     }
     
     func createNewGame()
     {
         colourSequence.removeAll()                          //remove entries from array to restart the game
+        
         actionButton.setTitle("Start Game", for: .normal)   //display start game at title
         actionButton.isEnabled = true                       //enabled at the beginning of the game
         
@@ -52,6 +63,27 @@ class ViewController: UIViewController {
             button.alpha = 0.5                              //reduces opacity for UX effect
             button.isEnabled = false                        //turn off buttons before game has started
         }
+        
+        currentPlayer = 0                                   //player 1 starts a new round
+        scores = [0,0]                                      //set scores to zero
+        playerLabels[currentPlayer].alpha = 1.0             //current player is highlighted
+        playerLabels[1].alpha = 0.75
+        updateScoreLabels()                                 //update labels
+    }
+    
+    func updateScoreLabels()
+    {
+        for (index, label) in scoreLabels.enumerated()      //provides index to array (1,0)
+        {
+            label.text = "\(scores[index])"                 //provides correct score for each label
+        }
+    }
+    
+    func switchPlayers()
+    {
+        playerLabels[currentPlayer].alpha = 0.75
+        currentPlayer = currentPlayer == 0 ? 1 : 0
+        playerLabels[currentPlayer].alpha = 1.0
     }
     
     func addNewColor()
@@ -90,6 +122,13 @@ class ViewController: UIViewController {
                 }
     }
     
+    func endGame()                                          //End of game function
+    {
+        //ternary option method
+        let message = currentPlayer == 0 ? "Player 2 wins!" : "Player 1 Wins!"
+        actionButton.setTitle(message, for: .normal)
+        gameEnded = true
+    }
 
     @IBAction func colourButtonHandler(_ sender: CircularButton)
     {
@@ -102,6 +141,7 @@ class ViewController: UIViewController {
                 {
                 button.isEnabled = false
                 }
+                endGame()
                 return
             }
         if coloursToTap.isEmpty
@@ -110,6 +150,10 @@ class ViewController: UIViewController {
             {
                 button.isEnabled = false
             }
+            scores[currentPlayer] += 1                      //update player score by 1
+            updateScoreLabels()                             //call update scores method to render
+            switchPlayers()                                 //switch players
+            
             actionButton.setTitle("Continue", for: .normal)
             actionButton.isEnabled = true
         }
