@@ -8,14 +8,27 @@
 
 import UIKit
 
-class CircularButton: UIButton {
+class CircularButton: UIButton
+{
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override func awakeFromNib()
+    {
+        layer.cornerRadius = frame.size.width/2 // 2 rounded corners
+        layer.masksToBounds = true //no sub layers behind and shape is circular
     }
-    */
+    
+    override var isHighlighted: Bool
+        {
+        didSet
+            {
+                if isHighlighted
+                {
+                    alpha = 1.0
+                } else
+                {
+                    alpha = 0.5
+                }
+            }
+        }
 
 }
